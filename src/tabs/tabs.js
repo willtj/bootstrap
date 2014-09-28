@@ -35,10 +35,11 @@ function TabsetCtrl($scope, $element) {
     }
   };
 
-  ctrl.removeTab = function removeTab(tab) {
+  ctrl.removeTab = function removeTab(tab, selectAlternate) {
+    selectAlternate = selectAlternate === false ? false : true;
     var index = tabs.indexOf(tab);
     //Select a new tab if the tab to be removed is selected
-    if (tab.active && tabs.length > 1) {
+    if (selectAlternate && tab.active && tabs.length > 1) {
       //If this is the last tab, select the previous tab. else, the next tab.
       var newActiveIndex = index == tabs.length - 1 ? index - 1 : index + 1;
       ctrl.select(tabs[newActiveIndex]);
@@ -232,7 +233,7 @@ function($parse, $http, $templateCache, $compile) {
 
         tabsetCtrl.addTab(scope);
         scope.$on('$destroy', function() {
-          tabsetCtrl.removeTab(scope);
+          tabsetCtrl.removeTab(scope, false);
         });
         if (scope.active) {
           setActive(scope.$parent, true);
